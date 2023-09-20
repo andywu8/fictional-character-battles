@@ -28,7 +28,7 @@ def create_record(character_1, character_2, email):
 def get_records():
     con = sqlite3.connect("test.db")
     cur = con.cursor()
-    statement = """ SELECT character_1, character_2, character_1_votes, character_2_votes FROM records
+    statement = """ SELECT id, character_1, character_2, character_1_votes, character_2_votes FROM records
     """
     print("statement", statement)
     cur.execute(statement)
@@ -38,7 +38,19 @@ def get_records():
     con.close()
     return records
 
-
-
-def update_vote():
+def update_vote(id, character):
+    con = sqlite3.connect("test.db")
+    cur = con.cursor()
+    statement = """ Update records
+    Set character_1_votes = character_1_votes + 1
+    Where id = ? and character_1 =?
+    """
+    cur.execute(statement, (id, character))
+    statement = """ Update records
+    Set character_2_votes = character_2_votes + 1
+    Where id = ? and character_2 =?
+    """
+    cur.execute(statement, (id, character))
+    con.commit()
+    con.close()
     return 

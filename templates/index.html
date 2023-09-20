@@ -2,6 +2,7 @@
 <html>
     <header>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="./index.css">
         <script>
             function myFunction() {
               // Declare variables
@@ -41,17 +42,23 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <!-- <input class="login-btn btn-space" type="submit" value="Submit"> -->
           </form>
-          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+          <div class="text-center">
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+          </div>
           <div class="list-group">
             <ul id="myUL">
-                {%for character_1, character_2, character_1_votes, character_2_votes in records%}
+                {%for id, character_1, character_2, character_1_votes, character_2_votes in records%}
                     <li class="list-group-item list-group-item-action text-center">
-                    {{character_1_votes}}
-                    <button type="submit" class="btn btn-primary">Vote Left</button>
-                    <a>{{character_1}}</a>
-                    <a>{{character_2}}</a>
-                    <button type="submit" class="btn btn-primary">Vote Right</button>
-                    {{character_2_votes}}
+                        <form style="display: inline-block; margin-right: 10px;" action="{{url_for('vote', id=id, character=character_1)}}" method="post">
+                            {{character_1_votes}}
+                            <button type="submit" name="button_right" class="btn btn-primary">Vote Left</button>
+                            <a id="character_1" name="character_1">{{character_1}}</a>
+                        </form>
+                        <form style="display: inline-block; margin-left: 10px;" action="{{url_for('vote', id=id, character=character_2)}}" method="post">
+                            <a id="character_2" name="character_2">{{character_2}}</a>
+                            <button type="submit" name="button_right" class="btn btn-primary">Vote Right</button>
+                            {{character_2_votes}}
+                        </form>
                     </li>
                 {%endfor%}
 

@@ -10,7 +10,7 @@ app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
 oauth = OAuth(app)
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", None)
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", None)
-from controllers import create_record, get_records
+from controllers import create_record, get_records, update_vote
 
 
 @app.route("/")
@@ -66,6 +66,21 @@ def add_record():
     # print("character_2", character_2)
     create_record(character_1, character_2, email)
     return redirect('/')
+
+@app.route("/vote", methods=['GET', 'POST'])
+def vote():
+    print("request.method", request.method)
+    if request.method == 'POST':
+        id = request.args.get('id')
+        character = request.args.get('character')
+        update_vote(id, character)
+        # print("id", id)
+        # print("character", character)
+
+    return redirect('/')
+
+
+
 
 
 if __name__ == "__main__":
