@@ -3,3 +3,4 @@ werkzeug
 python-dotenv
 authlib
 requests
+gunicorn
