@@ -1,4 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import os
+from authlib.integrations.flask_client import OAuth
+from dotenv import load_dotenv
+from authlib.common.security import generate_token
+
+
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
 oauth = OAuth(app)
@@ -15,6 +21,7 @@ def home():
         app.logger.info('Need to log in')
         return render_template('login.html')
     
+
 @app.route('/google/')
 def google():
     CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
@@ -50,8 +57,8 @@ def logout():
     return redirect('/')
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 10000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(debug=True, host='localhost', port=port)
 
 
 
