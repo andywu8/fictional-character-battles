@@ -10,13 +10,15 @@ app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
 oauth = OAuth(app)
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", None)
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", None)
+from controllers import create_record, get_records
 
 
 @app.route("/")
 def home():
     if session and 'user' in session and session['user'] != None:
+        records = get_records()
         # records = get_records(session['user']['email'])
-        return render_template('index.html')
+        return render_template('index.html', records = records)
     else:
         app.logger.info('Need to log in')
         return render_template('login.html')
@@ -55,6 +57,16 @@ def logout():
         session.pop('nonce', None)  
     app.logger.info('Logging out')
     return redirect('/')
+
+@app.route("/add_record", methods=['GET', 'POST'])
+def add_record():
+    email = session['user']['email']
+    character_1, character_2 = request.args.get('character_1'), request.args.get('character_2')
+    # print("character_1", character_1)
+    # print("character_2", character_2)
+    create_record(character_1, character_2, email)
+    return redirect('/')
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 8000))

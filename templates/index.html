@@ -2,6 +2,27 @@
 <html>
     <header>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script>
+            function myFunction() {
+              // Declare variables
+              var input, filter, ul, li, a, i, txtValue;
+              input = document.getElementById('myInput');
+              filter = input.value.toUpperCase();
+              ul = document.getElementById("myUL");
+              li = ul.getElementsByTagName('li');
+            
+              // Loop through all list items, and hide those who don't match the search query
+              for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  li[i].style.display = "";
+                } else {
+                  li[i].style.display = "none";
+                }
+              }
+            }
+            </script>
     </header>
     <body>
         <a href="/logout" class="login-btn btn-space" style="text-decoration:none;">
@@ -12,5 +33,30 @@
         <h1>See your favorite characters fight</h1>
         <th>Table of Fighters</th>
         <tr></tr>
+        <form action="/add_record">
+            <label >Character 1</label><br>
+            <input type="text" id="character_1" name="character_1"><br>
+            <label >Character 2</label><br>
+            <input type="text" id="character_2" name="character_2"><br><br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <!-- <input class="login-btn btn-space" type="submit" value="Submit"> -->
+          </form>
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+          <div class="list-group">
+            <ul id="myUL">
+                {%for character_1, character_2, character_1_votes, character_2_votes in records%}
+                    <li class="list-group-item list-group-item-action text-center">
+                    {{character_1_votes}}
+                    <button type="submit" class="btn btn-primary">Vote Left</button>
+                    <a>{{character_1}}</a>
+                    <a>{{character_2}}</a>
+                    <button type="submit" class="btn btn-primary">Vote Right</button>
+                    {{character_2_votes}}
+                    </li>
+                {%endfor%}
+
+            </ul>
+          </div>
+
     </body>
 </html>
