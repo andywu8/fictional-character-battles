@@ -62,8 +62,6 @@ def logout():
 def add_record():
     email = session['user']['email']
     character_1, character_2 = request.args.get('character_1'), request.args.get('character_2')
-    # print("character_1", character_1)
-    # print("character_2", character_2)
     create_record(character_1, character_2, email)
     return redirect('/')
 
