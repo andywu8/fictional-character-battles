@@ -6,6 +6,7 @@ create table records (
     character_2 text not null, 
     character_1_votes int not null,
     character_2_votes int not null,
+    anime_name text not null, 
     user_who_uploaded email not null,
     uploaded_timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -18,5 +19,14 @@ create table user_vote (
     user_email email not null,
     uploaded_timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP NOT NULL,
     record_id int,
+    FOREIGN KEY (record_id) REFERENCES records(id)
+);
+
+DROP TABLE IF EXISTS user_vote;
+create table comments (
+    id integer primary key autoincrement,
+    user_email email not null,
+    comment text not null,
+    uploaded_timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (record_id) REFERENCES records(id)
 );

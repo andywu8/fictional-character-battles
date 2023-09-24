@@ -17,8 +17,9 @@ from controllers import create_record, get_records, update_vote
 def home():
     if session and 'user' in session and session['user'] != None:
         records = get_records()
+        name = session['user']['name']
         # records = get_records(session['user']['email'])
-        return render_template('index.html', records = records)
+        return render_template('index.html', records = records, name=name)
     else:
         app.logger.info('Need to log in')
         return render_template('login.html')
@@ -62,7 +63,8 @@ def logout():
 def add_record():
     email = session['user']['email']
     character_1, character_2 = request.args.get('character_1'), request.args.get('character_2')
-    create_record(character_1, character_2, email)
+    anime_name = request.args.get('anime_name')
+    create_record(character_1, character_2, anime_name, email)
     return redirect('/')
 
 @app.route("/vote", methods=['GET', 'POST'])

@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="./index.css">
         <script>
-            function myFunction() {
+            function search_record() {
               // Declare variables
               var input, filter, ul, li, a, i, txtValue;
               input = document.getElementById('myInput');
@@ -14,7 +14,7 @@
             
               // Loop through all list items, and hide those who don't match the search query
               for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
+                a = li[i].getElementsByTagName("span")[0];
                 txtValue = a.textContent || a.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                   li[i].style.display = "";
@@ -25,40 +25,100 @@
             }
             </script>
     </header>
+    <style>
+      body {
+        padding-top: 60px;
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+      .collapsible {
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+      }
+
+      .active, .collapsible:hover {
+        background-color: #555;
+      }
+
+      .content {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        background-color: #f1f1f1;
+      }
+      </style>
     <body>
-        <a href="/logout" class="login-btn btn-space" style="text-decoration:none;">
+        <!-- <a href="/logout" class="login-btn btn-space" style="text-decoration:none;">
             <div class="btn btn-primary">
                 Logout
             </div>
-        </a> 
+        </a>  -->
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <p>Hello {{ name }}! </p>
+            <a href="/logout" class="login-btn btn-space" style="text-decoration:none;">
+            <div class="btn btn-primary">
+                Logout
+            </div>
+            </a> 
+          </div>
+        </div>
         <h1>See your favorite characters fight</h1>
-        <th>Table of Fighters</th>
-        <tr></tr>
-        <form action="/add_record">
+        
+        <form action="/add_record" style="margin-left: 50px;">
             <label >Character 1</label><br>
             <input type="text" id="character_1" name="character_1"><br>
             <label >Character 2</label><br>
-            <input type="text" id="character_2" name="character_2"><br><br>
+            <input type="text" id="character_2" name="character_2"><br>
+            <label>Anime Name</label><br>
+            <input type="text" id="anime_name" name="anime_name"><br><br>
             <button type="submit" class="btn btn-primary">Submit</button>
             <!-- <input class="login-btn btn-space" type="submit" value="Submit"> -->
           </form>
           <div class="text-center">
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+            <h2>Table of Fighters</h2>
+            <input type="text" id="myInput" onkeyup="search_record()" placeholder="Search for names..">
+          </div>
+          <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Link with href
+            </a>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Button with data-target
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+            </div>
           </div>
           <div class="list-group">
             <ul id="myUL">
-                {%for id, character_1, character_2, character_1_votes, character_2_votes in records%}
+                {%for id, character_1, character_2, character_1_votes, character_2_votes, anime_name, total_votes in records%}
                     <li class="list-group-item list-group-item-action text-center">
                         <form style="display: inline-block; margin-right: 10px;" action="{{url_for('vote', id=id, character=character_1)}}" method="post">
                             {{character_1_votes}}
                             <button type="submit" name="button_right" class="btn btn-primary">Vote Left</button>
                             <a id="character_1" name="character_1">{{character_1}}</a>
                         </form>
+                        <span class="badge badge-warning">{{anime_name}}</span>
                         <form style="display: inline-block; margin-left: 10px;" action="{{url_for('vote', id=id, character=character_2)}}" method="post">
                             <a id="character_2" name="character_2">{{character_2}}</a>
                             <button type="submit" name="button_right" class="btn btn-primary">Vote Right</button>
                             {{character_2_votes}}
                         </form>
+
+                        <!-- <button type="submit" class="btn btn-primary">Comments</button> -->
+
+
                     </li>
                 {%endfor%}
 
