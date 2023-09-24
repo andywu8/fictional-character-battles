@@ -10,16 +10,17 @@ app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
 oauth = OAuth(app)
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", None)
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", None)
-from controllers import create_record, get_records, update_vote
+from controllers import create_record, get_records, update_vote, insert_comment, get_comments
 
 
 @app.route("/")
 def home():
     if session and 'user' in session and session['user'] != None:
         records = get_records()
+        comments = get_comments()
         name = session['user']['name']
         # records = get_records(session['user']['email'])
-        return render_template('index.html', records = records, name=name)
+        return render_template('index.html', records = records, name=name, comments = comments)
     else:
         app.logger.info('Need to log in')
         return render_template('login.html')
@@ -62,24 +63,32 @@ def logout():
 @app.route("/add_record", methods=['GET', 'POST'])
 def add_record():
     email = session['user']['email']
-    character_1, character_2 = request.args.get('character_1'), request.args.get('character_2')
     anime_name = request.args.get('anime_name')
-    create_record(character_1, character_2, anime_name, email)
+    character_1, character_2 = request.args.get('character_1'), request.args.get('character_2')
+    if character_1 and character_2:
+        create_record(character_1, character_2, anime_name, email)
+    else:
+        print("invalid submission")
     return redirect('/')
 
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
-    print("request.method", request.method)
     if request.method == 'POST':
         id = request.args.get('id')
         character = request.args.get('character')
         update_vote(id, character)
-        # print("id", id)
-        # print("character", character)
-
     return redirect('/')
 
-
+@app.route("/comment", methods=['GET', 'POST'])
+def comment():
+    if request.method == 'POST':
+        email = session['user']['email']
+        id = request.args.get('id')
+        print("id here", id)
+        comment = request.args.get('comment')
+        print("comment here", comment)
+        insert_comment(email, id, comment)
+    return redirect('/')
 
 
 

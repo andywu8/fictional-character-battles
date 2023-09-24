@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
     <header>
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="./index.css">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  
         <script>
             function search_record() {
               // Declare variables
@@ -56,11 +61,6 @@
       }
       </style>
     <body>
-        <!-- <a href="/logout" class="login-btn btn-space" style="text-decoration:none;">
-            <div class="btn btn-primary">
-                Logout
-            </div>
-        </a>  -->
         <div class="row">
           <div class="col-md-12 text-right">
             <p>Hello {{ name }}! </p>
@@ -83,22 +83,10 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <!-- <input class="login-btn btn-space" type="submit" value="Submit"> -->
           </form>
+          
           <div class="text-center">
             <h2>Table of Fighters</h2>
             <input type="text" id="myInput" onkeyup="search_record()" placeholder="Search for names..">
-          </div>
-          <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Link with href
-            </a>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Button with data-target
-            </button>
-          </p>
-          <div class="collapse" id="collapseExample">
-            <div class="card card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-            </div>
           </div>
           <div class="list-group">
             <ul id="myUL">
@@ -109,16 +97,37 @@
                             <button type="submit" name="button_right" class="btn btn-primary">Vote Left</button>
                             <a id="character_1" name="character_1">{{character_1}}</a>
                         </form>
-                        <span class="badge badge-warning">{{anime_name}}</span>
+                        <span class="badge badge-warning text-dark">{{anime_name}}</span>
                         <form style="display: inline-block; margin-left: 10px;" action="{{url_for('vote', id=id, character=character_2)}}" method="post">
                             <a id="character_2" name="character_2">{{character_2}}</a>
                             <button type="submit" name="button_right" class="btn btn-primary">Vote Right</button>
                             {{character_2_votes}}
                         </form>
+                        
+                        <p>
+                          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
+                            Comments
+                          </button>
+                        </p>
+                        
+                        <div class="collapse" id="collapseDiv_{{id}}">
+                          {%for comment_id, user_email, comment, uploaded_timestamp, record_id in comments%}
 
-                        <!-- <button type="submit" class="btn btn-primary">Comments</button> -->
+                          {% if record_id == id %}
+                          <div class="card card-body">
+                            {{user_email}}
+                            {{comment}}
+                          </div>
+                          {% endif %}
+                          {%endfor%}
 
-
+                          
+                          <form action="{{url_for('comment', id=id, comment=comment)}}" method="post">
+                            <label for="comment">Add Comment:</label>
+                            <input type="text" id="comment" name="comment"><br><br>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </form>
+                        </div>
                     </li>
                 {%endfor%}
 

@@ -51,17 +51,19 @@ def update_vote(id, character):
     con.commit()
     con.close()
     return 
-def retrieve_comments(id):
+def get_comments():
     con = sqlite3.connect("test.db")
     cur = con.cursor()
     statement = """
-    SELECT * from comments where record_id = id
+    SELECT comment_id, user_email, comment, uploaded_timestamp, record_id
+    FROM comments 
     """
-    cur.execute(statement, [id])
-    records = cur.fetchall()
+    cur.execute(statement)
+    comments = cur.fetchall()
+    print("comments", comments)
     con.commit()
     con.close()
-    return records
+    return comments
 
 def insert_comment(email, comment, id):
     con = sqlite3.connect("test.db")
@@ -71,7 +73,9 @@ def insert_comment(email, comment, id):
     (user_email, comment, record_id)
     VALUES (?,?,?)
     """
+    print("statement", statement)
     cur.execute(statement, [email, comment, id])
     con.commit()
     con.close()
     return
+

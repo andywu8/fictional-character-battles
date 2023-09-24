@@ -11,8 +11,6 @@ create table records (
     uploaded_timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-
-
 DROP TABLE IF EXISTS user_vote;
 create table user_vote (
     id integer primary key autoincrement,
@@ -22,11 +20,12 @@ create table user_vote (
     FOREIGN KEY (record_id) REFERENCES records(id)
 );
 
-DROP TABLE IF EXISTS user_vote;
+DROP TABLE IF EXISTS comments;
 create table comments (
-    id integer primary key autoincrement,
+    comment_id integer primary key autoincrement,
     user_email email not null,
     comment text not null,
     uploaded_timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    record_id int, 
     FOREIGN KEY (record_id) REFERENCES records(id)
 );
