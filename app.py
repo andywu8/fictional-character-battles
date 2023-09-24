@@ -84,10 +84,10 @@ def comment():
     if request.method == 'POST':
         email = session['user']['email']
         id = request.args.get('id')
-        print("id here", id)
-        comment = request.args.get('comment')
-        print("comment here", comment)
-        insert_comment(email, id, comment)
+        specific_comment = 'comment_'+id
+        # print("specific_comment", specific_comment)
+        comment = request.form.get(specific_comment)
+        insert_comment(email, comment, id)
     return redirect('/')
 
 
