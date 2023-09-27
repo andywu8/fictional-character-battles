@@ -1,17 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import os
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from authlib.common.security import generate_token
-
-
+from urllib.parse import unquote
 app = Flask(__name__)
+
 app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
 oauth = OAuth(app)
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", None)
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", None)
 from controllers import create_record, get_records, update_vote, insert_comment, get_comments
-
 
 @app.route("/")
 def home():
@@ -24,7 +23,7 @@ def home():
     else:
         app.logger.info('Need to log in')
         return render_template('login.html')
-    
+
 
 @app.route('/google/')
 def google():
@@ -79,6 +78,38 @@ def vote():
         update_vote(id, character)
     return redirect('/')
 
+@app.route("/add_comment", methods=['GET', 'POST'])
+def add_comment():
+    if request.method == "POST":
+        email = session['user']['email']
+        clicked=request.get_json('data')
+        print("clicked", clicked)
+        clicked = clicked.split("=")
+        comment = unquote(clicked[1])
+        print("comment", comment)
+        div_id = clicked[0]
+        id = div_id.split("_")[1]
+        print("id", id)
+        insert_comment(email, comment, id)
+        comments = get_comments()
+        return jsonify({'id': id,'data': render_template('comments.html', comments=comments)})
+
+        #   return comments
+        #   return jsonify({'comments': comments})
+        #   return comments
+
+
+        #   print("clicked", clicked)
+    return redirect('/')
+
+    # if request.method == 'POST':
+        # email = session['user']['email']
+        # id = request.args.get('id')
+        # specific_comment = 'comment_'+id
+        # # print("specific_comment", specific_comment)
+        # comment = request.form.get(specific_comment)
+        # insert_comment(email, comment, id)
+    return redirect('/')
 @app.route("/comment", methods=['GET', 'POST'])
 def comment():
     if request.method == 'POST':

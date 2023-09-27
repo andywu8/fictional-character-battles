@@ -1,0 +1,6 @@
+{%for comment_id, user_email, comment, uploaded_timestamp, record_id in comments%}
+    <div class="card card-body">
+    <b>{{user_email}}</b>
+    <p>{{comment}}</p>
+    </div>
+{%endfor%}

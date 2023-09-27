@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html>
     <header>
-
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <Script>
+          $(document).ready(function(){
+          
+            $("#comment_form").on('submit' , function(e) {
+              e.preventDefault();
+              var form = $(this);
+              console.log("form", form)
+              var form_data = form.serialize()
+              console.log(form_data)
+              // form_id = form.id
+              // console.log("form_id", form_id)
+              // var actionUrl = form.attr('action');
+              $.ajax({
+                headers: { 
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json' 
+                },
+                  type: "POST",
+                  url: "/add_comment",
+                  'data': JSON.stringify(form_data),
+                  'dataType': 'json',
+                  success: function(response)
+                  {
+                    // alert(response.data)
+                    // alert("collapseDiv_".concat(response.id))
+                    $("#collapseDiv_".concat(response.id)).html(response.data);
+                    // $('#ResponseDiv').html(response.data);
+                    // $("responseDiv").append(response.data);
+                    // alert(comments); // show response from the php script.
+                  }
+              });
+            })
+          });
+             </script>
         <script>
             function search_record() {
               // Declare variables
@@ -28,7 +62,7 @@
                 }
               }
             }
-            </script>
+          </script>
     </header>
     <style>
       body {
@@ -83,7 +117,22 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <!-- <input class="login-btn btn-space" type="submit" value="Submit"> -->
           </form>
+          <!-- <div id="parent-div">
+
+          </div>
+          <button 
+          hx-post="/retrieve_comments" 
+          hx-swap="outerHTML"     
+          hx-trigger="click"
+          hx-target="#parent-div"
+          >
+            Click Me
+          </button> -->
           
+          <div id="ResponseDiv">
+            <h1>ResponseDiv</h1>
+
+          </div>
           <div class="text-center">
             <h2>Table of Fighters</h2>
             <input type="text" id="myInput" onkeyup="search_record()" placeholder="Search for names..">
@@ -105,26 +154,24 @@
                         </form>
                         
                         <p>
-                          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
+                          <button class="btn btn-primary" id="comments-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
                             Comments
                           </button>
                         </p>
                         
                         <div class="collapse" id="collapseDiv_{{id}}">
-                          {%for comment_id, user_email, comment, uploaded_timestamp, record_id in comments%}
-                            {% if record_id == id %}
-                            <div class="card card-body">
-                              <b>{{user_email}}</b>
-                              <p>{{comment}}</p>
-                            </div>
-                            {% endif %}
-                          {%endfor%}
-                          <form action="{{url_for('comment',id=id)}}" method="post">
+            
+                          <form id="comment_form">
                             <label for="comment">Add Comment:</label>
                             <input type="text" id="comment_{{id}}" name="comment_{{id}}"><br><br>
                             <button type="submit" class="btn btn-primary">Submit</button>
                           </form>
-                        </div>
+                          <!-- <form action="{{url_for('comment',id=id)}}" method="post">
+                            <label for="comment">Add Comment:</label>
+                            <input type="text" id="comment_{{id}}" name="comment_{{id}}"><br><br>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </form> -->
+                          </div>
                     </li>
                 {%endfor%}
 

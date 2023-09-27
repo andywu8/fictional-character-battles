@@ -4,3 +4,5 @@ python-dotenv
 authlib
 requests
 gunicorn
+psycopg2-binary
+urllib.parse
