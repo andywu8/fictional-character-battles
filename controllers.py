@@ -15,7 +15,7 @@ def create_record(character_1, character_2, anime_name, email):
     (character_1, character_2, character_1_votes, character_2_votes, anime_name, user_who_uploaded)
     VALUES (%s,%s,%s,%s,%s,%s)
     """
-    print("statement:", statement)
+    # print("statement:", statement)
     cur.execute(statement, [character_1, character_2, 0, 0, anime_name, email])
     con.commit()
     con.close()
@@ -41,7 +41,7 @@ def get_records():
     FROM records
     ORDER BY total_votes DESC
     """
-    print("statement", statement)
+    # print("statement", statement)
     cur.execute(statement)
     records = cur.fetchall()
     print("records", records)
@@ -104,8 +104,9 @@ def insert_comment(email, comment, id):
     (user_email, comment, record_id)
     VALUES (%s,%s,%s)
     """
-    print("statement", statement)
+    # print("statement", statement)
     cur.execute(statement, [email, comment, id])
+    print("inserting comment", comment)
     con.commit()
     con.close()
     return

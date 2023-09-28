@@ -11,15 +11,12 @@
         <Script>
           $(document).ready(function(){
           
-            $("#comment_form").on('submit' , function(e) {
+            $(".comment_form").on('submit' , function(e) {
               e.preventDefault();
               var form = $(this);
               console.log("form", form)
               var form_data = form.serialize()
               console.log(form_data)
-              // form_id = form.id
-              // console.log("form_id", form_id)
-              // var actionUrl = form.attr('action');
               $.ajax({
                 headers: { 
                   'Accept': 'application/json',
@@ -31,12 +28,7 @@
                   'dataType': 'json',
                   success: function(response)
                   {
-                    // alert(response.data)
-                    // alert("collapseDiv_".concat(response.id))
-                    $("#collapseDiv_".concat(response.id)).html(response.data);
-                    // $('#ResponseDiv').html(response.data);
-                    // $("responseDiv").append(response.data);
-                    // alert(comments); // show response from the php script.
+                    $("#comment_content_".concat(response.id)).html(response.data);
                   }
               });
             })
@@ -160,8 +152,11 @@
                         </p>
                         
                         <div class="collapse" id="collapseDiv_{{id}}">
+                          <div id="comment_content_{{id}}">
+                            
+                          </div>
             
-                          <form id="comment_form">
+                          <form class="comment_form">
                             <label for="comment">Add Comment:</label>
                             <input type="text" id="comment_{{id}}" name="comment_{{id}}"><br><br>
                             <button type="submit" class="btn btn-primary">Submit</button>
