@@ -5,5 +5,4 @@ authlib
 requests
 gunicorn
 psycopg2-binary
-urllib
 requests
