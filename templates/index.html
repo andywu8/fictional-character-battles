@@ -8,7 +8,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <Script>
+        <script>
           $(document).ready(function(){
             function add_comment(form_data) {
               $.ajax({
@@ -22,24 +22,11 @@
                   'dataType': 'json',
                   success: function(response)
                   {
-                    $("#comment_content_".concat(response.id)).html(response.data);
-                    $(".comment_form")[0].reset()
-
+                    show_comments(response.id)
                   }
               });
             }
-          
-            $(".comment_form").on('submit' , function(e) {
-              e.preventDefault();
-              var form = $(this);
-              console.log("form", form)
-              var form_data = form.serialize()
-              console.log(form_data)
-              add_comment(form_data)
-            })
-            $(".comments-button").click(function(){
-              var id =$(this).attr("value");
-              console.log("id", id)
+            function show_comments(id){
               $.ajax({
                 headers: { 
                   'Accept': 'application/json',
@@ -54,6 +41,22 @@
                     $("#comment_content_".concat(response.id)).html(response.data);
                   }
               });
+            }
+          
+            $(".comment_form").on('submit' , function(e) {
+              e.preventDefault();
+              var form = $(this);
+              console.log("form", form)
+              var form_data = form.serialize()
+              console.log(form_data)
+              $(".comment_form")[0].reset()
+              add_comment(form_data)
+            })
+            $(".comments-button").click(function(){
+              var id =$(this).attr("value");
+              console.log("id", id)
+              show_comments(id)
+
             });
           });
              </script>
@@ -77,7 +80,8 @@
                 }
               }
             }
-          </script>
+          
+        </script>
     </header>
     <style>
       body {

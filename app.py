@@ -90,8 +90,7 @@ def add_comment():
         id = div_id.split("_")[1]
         print("id", id)
         insert_comment(email, comment, id)
-        comments = get_comments(id)
-        return jsonify({'id': id,'data': render_template('comments.html', comments=comments)})
+        return jsonify({'id': id})
     
 @app.route("/show_comments", methods=['GET', 'POST'])
 def show_comments():
