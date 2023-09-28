@@ -95,6 +95,7 @@ def add_comment():
     
 @app.route("/show_comments", methods=['GET', 'POST'])
 def show_comments():
+    print("is this being called")
     if request.method == "POST":
         id=request.get_json('data')
         print("id", id)

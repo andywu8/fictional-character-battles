@@ -37,7 +37,7 @@
               console.log(form_data)
               add_comment(form_data)
             })
-            $("#comments-button").click(function(){
+            $(".comments-button").click(function(){
               var id =$(this).attr("value");
               console.log("id", id)
               $.ajax({
@@ -165,7 +165,7 @@
                         </form>
                         
                         <p>
-                          <button class="btn btn-primary" id="comments-button" value={{id}} type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
+                          <button class="btn btn-primary comments-button"  value={{id}} type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
                           Comments
                           </button>
                         </p>
