@@ -86,7 +86,7 @@ def get_comments(id):
     """
     cur.execute(statement, [id])
     comments = cur.fetchall()
-    print("comments", comments)
+    # print("comments", comments)
     con.commit()
     con.close()
     return comments

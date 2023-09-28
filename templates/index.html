@@ -92,17 +92,12 @@
                             
                           </div>
             
-                          <form class="comment_form">
+                          <form class="comment_form" id="comment_form_{{id}}">
 
                             <label for="comment">Add Comment:</label>
                             <input type="text" id="comment_{{id}}" name="comment_{{id}}"><br><br>
                             <button type="submit" class="btn btn-primary">Submit</button>
                           </form>
-                          <!-- <form action="{{url_for('comment',id=id)}}" method="post">
-                            <label for="comment">Add Comment:</label>
-                            <input type="text" id="comment_{{id}}" name="comment_{{id}}"><br><br>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </form> -->
                           </div>
                     </li>
                 {%endfor%}
@@ -139,13 +134,21 @@
         // add comment will call show comment afterwards
         function add_comment(form_data) {
           $.ajax({
+              headers: { 
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json' 
+              },
               type: "POST",
               url: "/add_comment",
               'data': JSON.stringify(form_data),
               'dataType': 'json',
               success: function(response)
               {
+                
+                // console.log("response.id-1", response.id-1)
                 show_comments(response.id)
+                // console.log("check id value", "comment_".concat(response.id))
+                document.getElementById("comment_form_".concat(response.id)).reset()
               }
           });
         }
@@ -153,6 +156,10 @@
         // base function for fetching comments
         function show_comments(id){
           $.ajax({
+              headers: { 
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json' 
+              },
               type: "POST",
               url: "/show_comments",
               'data': id,
@@ -169,7 +176,7 @@
           e.preventDefault();
           var form = $(this);
           var form_data = form.serialize()
-          $(".comment_form")[0].reset()
+          console.log("form_data", form_data)
           add_comment(form_data)
         })
 

@@ -2,7 +2,6 @@ flask
 werkzeug
 python-dotenv
 authlib
-requests
 gunicorn
 psycopg2-binary
 requests

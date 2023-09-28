@@ -3,7 +3,7 @@ import os
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from authlib.common.security import generate_token
-from urllib import parse
+from urllib.parse import unquote
 import requests
 app = Flask(__name__)
 
@@ -84,8 +84,9 @@ def add_comment():
         clicked=request.get_json('data')
         # print("clicked", clicked)
         clicked = clicked.split("=")
-        comment = parse.unquote(clicked[1])
-        # print("comment", comment)
+        # comment = clicked[1]
+        comment = unquote(clicked[1])
+        print("comment", comment)
         div_id = clicked[0]
         id = div_id.split("_")[1]
         # print("id", id)
