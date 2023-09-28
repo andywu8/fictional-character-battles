@@ -70,7 +70,7 @@ def update_vote(id, character):
     con.commit()
     con.close()
     return 
-def get_comments():
+def get_comments(id):
     # con = sqlite3.connect("test.db")
     con = psycopg2.connect(
         host="localhost",
@@ -82,8 +82,9 @@ def get_comments():
     statement = """
     SELECT comment_id, user_email, comment, uploaded_timestamp, record_id
     FROM comments 
+    WHERE record_id = %s
     """
-    cur.execute(statement)
+    cur.execute(statement, [id])
     comments = cur.fetchall()
     print("comments", comments)
     con.commit()

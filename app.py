@@ -16,10 +16,9 @@ from controllers import create_record, get_records, update_vote, insert_comment,
 def home():
     if session and 'user' in session and session['user'] != None:
         records = get_records()
-        comments = get_comments()
         name = session['user']['name']
         # records = get_records(session['user']['email'])
-        return render_template('index.html', records = records, name=name, comments = comments)
+        return render_template('index.html', records = records, name=name)
     else:
         app.logger.info('Need to log in')
         return render_template('login.html')
@@ -91,25 +90,17 @@ def add_comment():
         id = div_id.split("_")[1]
         print("id", id)
         insert_comment(email, comment, id)
-        comments = get_comments()
+        comments = get_comments(id)
+        return jsonify({'id': id,'data': render_template('comments.html', comments=comments)})
+    
+@app.route("/show_comments", methods=['GET', 'POST'])
+def show_comments():
+    if request.method == "POST":
+        id=request.get_json('data')
+        print("id", id)
+        comments = get_comments(id)
         return jsonify({'id': id,'data': render_template('comments.html', comments=comments)})
 
-        #   return comments
-        #   return jsonify({'comments': comments})
-        #   return comments
-
-
-        #   print("clicked", clicked)
-    return redirect('/')
-
-    # if request.method == 'POST':
-        # email = session['user']['email']
-        # id = request.args.get('id')
-        # specific_comment = 'comment_'+id
-        # # print("specific_comment", specific_comment)
-        # comment = request.form.get(specific_comment)
-        # insert_comment(email, comment, id)
-    return redirect('/')
 @app.route("/comment", methods=['GET', 'POST'])
 def comment():
     if request.method == 'POST':

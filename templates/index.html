@@ -10,13 +10,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <Script>
           $(document).ready(function(){
-          
-            $(".comment_form").on('submit' , function(e) {
-              e.preventDefault();
-              var form = $(this);
-              console.log("form", form)
-              var form_data = form.serialize()
-              console.log(form_data)
+            function add_comment(form_data) {
               $.ajax({
                 headers: { 
                   'Accept': 'application/json',
@@ -29,9 +23,38 @@
                   success: function(response)
                   {
                     $("#comment_content_".concat(response.id)).html(response.data);
+                    $(".comment_form")[0].reset()
+
                   }
               });
+            }
+          
+            $(".comment_form").on('submit' , function(e) {
+              e.preventDefault();
+              var form = $(this);
+              console.log("form", form)
+              var form_data = form.serialize()
+              console.log(form_data)
+              add_comment(form_data)
             })
+            $("#comments-button").click(function(){
+              var id =$(this).attr("value");
+              console.log("id", id)
+              $.ajax({
+                headers: { 
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json' 
+                },
+                  type: "POST",
+                  url: "/show_comments",
+                  'data': id,
+                  'dataType': 'json',
+                  success: function(response)
+                  {
+                    $("#comment_content_".concat(response.id)).html(response.data);
+                  }
+              });
+            });
           });
              </script>
         <script>
@@ -121,10 +144,6 @@
             Click Me
           </button> -->
           
-          <div id="ResponseDiv">
-            <h1>ResponseDiv</h1>
-
-          </div>
           <div class="text-center">
             <h2>Table of Fighters</h2>
             <input type="text" id="myInput" onkeyup="search_record()" placeholder="Search for names..">
@@ -146,8 +165,8 @@
                         </form>
                         
                         <p>
-                          <button class="btn btn-primary" id="comments-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
-                            Comments
+                          <button class="btn btn-primary" id="comments-button" value={{id}} type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv_{{id}}" aria-expanded="false" aria-controls="collapseExample">
+                          Comments
                           </button>
                         </p>
                         
@@ -157,7 +176,7 @@
                           </div>
             
                           <form class="comment_form">
-                            
+
                             <label for="comment">Add Comment:</label>
                             <input type="text" id="comment_{{id}}" name="comment_{{id}}"><br><br>
                             <button type="submit" class="btn btn-primary">Submit</button>
