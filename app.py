@@ -3,7 +3,8 @@ import os
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from authlib.common.security import generate_token
-from urllib.parse import unquote
+from urllib import parse
+import requests
 app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
@@ -22,7 +23,6 @@ def home():
     else:
         app.logger.info('Need to log in')
         return render_template('login.html')
-
 
 @app.route('/google/')
 def google():
@@ -82,13 +82,13 @@ def add_comment():
     if request.method == "POST":
         email = session['user']['email']
         clicked=request.get_json('data')
-        print("clicked", clicked)
+        # print("clicked", clicked)
         clicked = clicked.split("=")
-        comment = unquote(clicked[1])
-        print("comment", comment)
+        comment = parse.unquote(clicked[1])
+        # print("comment", comment)
         div_id = clicked[0]
         id = div_id.split("_")[1]
-        print("id", id)
+        # print("id", id)
         insert_comment(email, comment, id)
         return jsonify({'id': id})
     
@@ -97,7 +97,7 @@ def show_comments():
     print("is this being called")
     if request.method == "POST":
         id=request.get_json('data')
-        print("id", id)
+        # print("id", id)
         comments = get_comments(id)
         return jsonify({'id': id,'data': render_template('comments.html', comments=comments)})
 
