@@ -1,10 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import os
 from authlib.integrations.flask_client import OAuth
-from dotenv import load_dotenv
 from authlib.common.security import generate_token
 from urllib.parse import unquote
-import requests
+
 app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY") or os.urandom(24)
