@@ -114,9 +114,19 @@ def comment():
 
 
 
+# if __name__ == "__main__":
+#     print("does this work")
+
+#     port = int(os.environ.get('PORT', 8000))
+#     app.run(debug=True, host='0.0.0.0', port=port)
+
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 8000))
-    app.run(debug=True, host='localhost', port=port)
+    port = int(os.environ.get('PORT', 10000))
+    app.run(debug=True, host='0.0.0.0', port=port)
+
+
+    # port = int(os.environ.get('PORT', 8000))
+    # app.run(debug=True, host='localhost', port=port)
 
 
 
