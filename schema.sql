@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS records;
+DROP TABLE IF EXISTS records CASCADE;
 
 create table records (
     id SERIAL PRIMARY KEY,
@@ -13,7 +13,7 @@ create table records (
 
 DROP TABLE IF EXISTS user_vote;
 create table user_vote (
-    id PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_email text not null,
     uploaded_timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP NOT NULL,
     record_id int,

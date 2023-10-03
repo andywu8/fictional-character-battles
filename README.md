@@ -4,6 +4,7 @@
 Add in fictional character matchups in your favorite animes. Vote on who you think will win and add in your votes. 
 
 ## How to run commands
+Venv 
 
 ### Docker
 Touch Dockerfile

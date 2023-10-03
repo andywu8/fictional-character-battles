@@ -1,11 +1,11 @@
 import sqlite3
 import psycopg2
 import os
-
+host_var = "localhost"
 def create_record(character_1, character_2, anime_name, email):
     # con = sqlite3.connect("test.db")
     con = psycopg2.connect(
-        host="localhost",
+        host=host_var,
         database="flask_db",
         user=os.getenv("DB_USERNAME"),
         password=os.getenv("DB_PASSWORD")
@@ -24,7 +24,7 @@ def create_record(character_1, character_2, anime_name, email):
 def get_records():
     # con = sqlite3.connect("test.db")
     con = psycopg2.connect(
-        host="localhost",
+        host=host_var,
         database="flask_db",
         user=os.getenv("DB_USERNAME"),
         password=os.getenv("DB_PASSWORD")
@@ -51,7 +51,7 @@ def get_records():
 
 def update_vote(id, character):
     con = psycopg2.connect(
-        host="localhost",
+        host=host_var,
         database="flask_db",
         user=os.getenv("DB_USERNAME"),
         password=os.getenv("DB_PASSWORD")
@@ -73,7 +73,7 @@ def update_vote(id, character):
 def get_comments(id):
     # con = sqlite3.connect("test.db")
     con = psycopg2.connect(
-        host="localhost",
+        host=host_var,
         database="flask_db",
         user=os.getenv("DB_USERNAME"),
         password=os.getenv("DB_PASSWORD")
@@ -94,7 +94,7 @@ def get_comments(id):
 def insert_comment(email, comment, id):
     # con = sqlite3.connect("test.db")
     con = psycopg2.connect(
-        host="localhost",
+        host=host_var,
         database="flask_db",
         user=os.getenv("DB_USERNAME"),
         password=os.getenv("DB_PASSWORD")
